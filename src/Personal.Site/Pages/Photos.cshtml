@@ -1,0 +1,16 @@
+@page
+@model PhotosModel
+@{
+    ViewData["Title"] = "Photos";
+}
+
+<div class="text-center">
+    <ul>
+        @{
+            foreach (string str in Model.ImagesToDisplay)
+            {
+                <li><div class="frame"><img src="@str" /></div></li>
+            }
+        }
+    </ul>
+</div>
