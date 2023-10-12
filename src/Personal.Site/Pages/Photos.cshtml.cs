@@ -32,6 +32,6 @@ public class PhotosModel : PageModel
 
     public string GetObjectUrl(S3Object obj)
     {
-        return $"http://{obj.BucketName}.s3.us-east-1.amazonaws.com/{HttpUtility.UrlEncode(obj.Key)}";
+        return $"https://{obj.BucketName}.s3.us-east-1.amazonaws.com/{HttpUtility.UrlEncode(obj.Key)}";
     }
 }
