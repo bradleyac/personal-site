@@ -21,7 +21,7 @@ public class PhotosModel : PageModel
     {
         var response = await _s3Client.ListObjectsV2Async(new ListObjectsV2Request
         {
-            BucketName = "bradley.ac.photos",
+            BucketName = "bradley-ac-photos",
         });
 
         foreach (var obj in response.S3Objects.Where(obj => obj.Key.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase)))

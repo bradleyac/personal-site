@@ -44,37 +44,31 @@ public class Function
 
             try
             {
-                if (s3Event.Object.Key.EndsWith(".jpg"))
+                var response = await amazonS3.GetObjectAsync(new GetObjectRequest
                 {
-                    var response = await amazonS3.GetObjectAsync(new GetObjectRequest
-                    {
-                        BucketName = s3Event.Bucket.Name,
-                        Key = s3Event.Object.Key,
-                    });
+                    BucketName = s3Event.Bucket.Name,
+                    Key = s3Event.Object.Key,
+                });
 
-                    Stream jpgStream = response.ResponseStream;
-                    MemoryStream encodedStream = new MemoryStream();
+                Stream jpgStream = response.ResponseStream;
+                MemoryStream encodedStream = new MemoryStream();
 
-                    using (ImageJob job = new ImageJob())
-                    {
-                        var result = await job.Decode(jpgStream, false).ConstrainWithin(1000, 1000).Encode(new StreamDestination(encodedStream, false), new PngQuantEncoder()).Finish().InProcessAsync();
-                    }
-
-                    var putObjectResponse = await amazonS3.PutObjectAsync(new PutObjectRequest
-                    {
-                        BucketName = s3Event.Bucket.Name,
-                        Key = Path.ChangeExtension(s3Event.Object.Key, ".png"),
-                        InputStream = encodedStream,
-                    });
-
-                    context.Logger.LogInformation($"Uploaded with response {putObjectResponse.HttpStatusCode}");
+                using (ImageJob job = new ImageJob())
+                {
+                    var result = await job.Decode(jpgStream, false).ConstrainWithin(1000, 1000).Encode(new StreamDestination(encodedStream, false), new PngQuantEncoder()).Finish().InProcessAsync();
                 }
-                //var response = await this.S3Client.GetObjectMetadataAsync(s3Event.Bucket.Name, s3Event.Object.Key);
-                //context.Logger.LogInformation(response.Headers.ContentType);
+
+                var putObjectResponse = await amazonS3.PutObjectAsync(new PutObjectRequest
+                {
+                    BucketName = s3Event.Bucket.Name,
+                    Key = Path.ChangeExtension(s3Event.Object.Key, ".png"),
+                    InputStream = encodedStream,
+                });
+
+                context.Logger.LogInformation($"Uploaded with response {putObjectResponse.HttpStatusCode}");
             }
             catch (Exception e)
             {
-                context.Logger.LogError($"Error getting object {s3Event.Object.Key} from bucket {s3Event.Bucket.Name}. Make sure they exist and your bucket is in the same region as this function.");
                 context.Logger.LogError(e.Message);
                 context.Logger.LogError(e.StackTrace);
                 throw;
