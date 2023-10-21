@@ -1,18 +1,29 @@
 .photos {
     list-style: none;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    flex-grow: 1;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+    justify-content: start;
 }
 
 .photos__photo {
-    margin: 1rem;
-    box-shadow: 2px 2px 4px gray;
+    margin: .25rem;
+    transition: .5s ease;
+}
+
+.photos__photo:hover {
+    transform: scale(2);
+    transition: .5s ease;
+    z-index: 1;
+}
+
+.photos__photo:hover>img {
+    box-shadow: none;
+    transition: .5s ease;
 }
 
 .photos__photo>img {
     max-width: 100%;
+    box-shadow: 2px 2px 4px gray;
+    transition: .5s ease;
 }
