@@ -4,12 +4,12 @@
     ViewData["Title"] = "photos";
 }
 
-<div class="text-center">
-    <ul>
+<div>
+    <ul class="photos">
         @{
             foreach (string str in Model.ImagesToDisplay)
             {
-                <li><div class="frame"><img src="@str" /></div></li>
+                <li class="photos__photo"><img src="@str" /></li>
             }
         }
     </ul>

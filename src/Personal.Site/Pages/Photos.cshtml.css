@@ -1,8 +1,18 @@
-div.frame {
-    margin: 5px;
-    padding: 5px;
+.photos {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-grow: 1;
 }
 
-ul {
-    list-style-type: none;
+.photos__photo {
+    margin: 1rem;
+    box-shadow: 2px 2px 4px gray;
+}
+
+.photos__photo>img {
+    max-width: 100%;
 }
