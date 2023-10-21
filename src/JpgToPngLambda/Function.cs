@@ -10,6 +10,13 @@ namespace JpgToPngLambda;
 
 public class Function
 {
+    private const string FallbackBucket = "bradley-ac-photos-resized";
+    private static string TargetBucket = "";
+
+    static Function()
+    {
+        TargetBucket = System.Environment.GetEnvironmentVariable("TARGET_BUCKET") ?? FallbackBucket;
+    }
     /// <summary>
     /// The main entry point for the custom runtime.
     /// </summary>
@@ -60,7 +67,7 @@ public class Function
 
                 var putObjectResponse = await amazonS3.PutObjectAsync(new PutObjectRequest
                 {
-                    BucketName = s3Event.Bucket.Name,
+                    BucketName = TargetBucket,
                     Key = Path.ChangeExtension(s3Event.Object.Key, ".png"),
                     InputStream = encodedStream,
                 });
